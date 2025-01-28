@@ -20,7 +20,7 @@ use sysinfo::ProcessesToUpdate;
 use websocket_lite::{ClientBuilder, Message, Opcode};
 
 use crate::core::{
-    ext_tracking::face2_fb::face2_fb_to_unified, AppState, INSTRUCTIONS_END, INSTRUCTIONS_START,
+    ext_tracking::face2_fb::face2_fb_to_unified, ext_tracking::face_pico::face_pico_to_unified, AppState, INSTRUCTIONS_END, INSTRUCTIONS_START,
     TRACK_ON,
 };
 
@@ -222,6 +222,8 @@ fn receive_until_err(
                                 );
                                 if let Some(face_fb) = tracking.fb_face_expression {
                                     data.shapes = face2_fb_to_unified(&face_fb);
+                                } else if let Some(face_pico) = tracking.pico_face_expression {
+                                    data.shapes = face_pico_to_unified(&face_pico);
                                 }
                                 if let Err(e) = sender.try_send(Box::new(data)) {
                                     log::debug!("Failed to send tracking message: {}", e);

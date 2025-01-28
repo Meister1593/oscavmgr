@@ -31,6 +31,7 @@ mod alvr;
 #[cfg(feature = "babble")]
 mod babble;
 mod face2_fb;
+mod face_pico;
 #[cfg(feature = "openxr")]
 mod htc;
 #[cfg(feature = "openxr")]
