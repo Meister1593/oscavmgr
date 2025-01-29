@@ -93,22 +93,25 @@ pub(crate) fn face_pico_to_unified(face_pico: &[f32]) -> Option<UnifiedShapes> {
 
     shapes.setu(
         UnifiedExpressions::EyeRightX,
-        getf(FacePico::EyeLookOutR) - getf(FacePico::EyeLookOutL),
+        getf(FacePico::EyeLookOutR) - getf(FacePico::EyeLookInR),
     );
     shapes.setu(
         UnifiedExpressions::EyeLeftX,
-        getf(FacePico::EyeLookInR) - getf(FacePico::EyeLookInL),
+        getf(FacePico::EyeLookOutL) - getf(FacePico::EyeLookInL),
     );
     shapes.setu(
         UnifiedExpressions::EyeY,
         getf(FacePico::EyeLookUpR) - getf(FacePico::EyeLookDownR),
     );
 
-    shapes.setu(UnifiedExpressions::EyeClosedLeft, getf(FacePico::EyeBlinkL));
-    shapes.setu(
-        UnifiedExpressions::EyeClosedRight,
-        getf(FacePico::EyeBlinkR),
-    );
+    let openness_l = 1.0
+        - (getf(FacePico::EyeBlinkL) + getf(FacePico::EyeBlinkL) * getf(FacePico::EyeSquintL))
+            .clamp(0.0, 1.0);
+    let openness_r = 1.0
+        - (getf(FacePico::EyeBlinkR) + getf(FacePico::EyeBlinkR) * getf(FacePico::EyeSquintR))
+            .clamp(0.0, 1.0);
+    shapes.setu(UnifiedExpressions::EyeClosedLeft, openness_l);
+    shapes.setu(UnifiedExpressions::EyeClosedRight, openness_r);
 
     shapes.setu(
         UnifiedExpressions::EyeSquintRight,
