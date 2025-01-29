@@ -104,12 +104,12 @@ pub(crate) fn face_pico_to_unified(face_pico: &[f32]) -> Option<UnifiedShapes> {
         getf(FacePico::EyeLookUpR) - getf(FacePico::EyeLookDownR),
     );
 
-    let openness_l = 1.0
-        - (getf(FacePico::EyeBlinkL) + getf(FacePico::EyeBlinkL) * getf(FacePico::EyeSquintL))
-            .clamp(0.0, 1.0);
-    let openness_r = 1.0
-        - (getf(FacePico::EyeBlinkR) + getf(FacePico::EyeBlinkR) * getf(FacePico::EyeSquintR))
-            .clamp(0.0, 1.0);
+    let openness_l = (getf(FacePico::EyeBlinkL)
+        + getf(FacePico::EyeBlinkL) * getf(FacePico::EyeSquintL))
+    .clamp(0.0, 1.0);
+    let openness_r = (getf(FacePico::EyeBlinkR)
+        + getf(FacePico::EyeBlinkR) * getf(FacePico::EyeSquintR))
+    .clamp(0.0, 1.0);
     shapes.setu(UnifiedExpressions::EyeClosedLeft, openness_l);
     shapes.setu(UnifiedExpressions::EyeClosedRight, openness_r);
 
