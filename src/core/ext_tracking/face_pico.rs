@@ -97,7 +97,7 @@ pub(crate) fn face_pico_to_unified(face_pico: &[f32]) -> Option<UnifiedShapes> {
     );
     shapes.setu(
         UnifiedExpressions::EyeLeftX,
-        getf(FacePico::EyeLookOutL) - getf(FacePico::EyeLookInL),
+        getf(FacePico::EyeLookInL) - getf(FacePico::EyeLookOutL),
     );
     shapes.setu(
         UnifiedExpressions::EyeY,
